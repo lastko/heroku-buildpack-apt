@@ -53,7 +53,7 @@ apt-key --keyring $BUILD_DIR/trusted.gpg adv --keyserver keyserver.ubuntu.com --
 APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR -o Dir::Etc::SourceList=$BUILD_DIR/.profile.d/sources.list -o Dir::Etc::Trusted=$BUILD_DIR/trusted.gpg"
 
 topic "Updating apt caches"
-apt-get $APT_OPTIONS --allow-unauthenticated update | indent
+apt-get $APT_OPTIONS update | indent
 
 for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
   if [[ $PACKAGE == *deb ]]; then
@@ -61,7 +61,7 @@ for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
     PACKAGE_FILE=$APT_CACHE_DIR/archives/00_$PACKAGE_NAME.deb
 
     topic "Fetching $PACKAGE"
-    wget -O $PACKAGE_FILE  $PACKAGE | indent
+    curl -s -L -z $PACKAGE_FILE -o $PACKAGE_FILE $PACKAGE 2>&1 | indent
   else
     topic "Fetching .debs for $PACKAGE"
     apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $PACKAGE | indent
@@ -75,7 +75,14 @@ for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
   dpkg -x $DEB $BUILD_DIR/.apt/
 done
 
+echo "#################################################"
+echo "#################################################"
+echo "#################################################"
+echo "#################################################"
+echo "#################################################"
 topic "Deleting .debs and installing Aptfile2"
+ldconfig
+apt-get $APT_OPTIONS update | indent
 
 rm -rf $APT_CACHE_DIR/archives/*.deb
 
@@ -85,14 +92,13 @@ for PACKAGE in $(cat $BUILD_DIR/Aptfile2); do
     PACKAGE_FILE=$APT_CACHE_DIR/archives/00_$PACKAGE_NAME.deb
 
     topic "Fetching $PACKAGE"
-    wget -O $PACKAGE_FILE  $PACKAGE | indent
+    curl -s -L -z $PACKAGE_FILE -o $PACKAGE_FILE $PACKAGE 2>&1 | indent
   else
     topic "Fetching .debs for $PACKAGE"
     apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $PACKAGE | indent
   fi
 done
 
-mkdir -p $BUILD_DIR/.apt
 
 for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
   topic "Installing $(basename $DEB)"
