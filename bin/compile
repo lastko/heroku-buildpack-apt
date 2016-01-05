@@ -57,7 +57,7 @@ EOF
 
 cp -a /etc/apt/trusted.gpg $BUILD_DIR/trusted.gpg
 apt-key --keyring $BUILD_DIR/trusted.gpg adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-wget -O- https://ftp-master.debian.org/keys/archive-key-8.asc|apt-key --keyring $BUILD_DIR/trusted.gpg add -
+apt-key --keyring $BUILD_DIR/trusted.gpg adv --keyserver keyserver.ubuntu.com --recv-keys 126C0D24BD8A2942CC7DF8AC7638D0442B90D010
 
 
 APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR -o Dir::Etc::SourceList=$BUILD_DIR/.profile.d/sources.list -o Dir::Etc::Trusted=$BUILD_DIR/trusted.gpg -o Dir::Etc::Preferences=$BUILD_DIR/.profile.d/preferences"
