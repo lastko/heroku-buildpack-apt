@@ -45,6 +45,7 @@ deb http://archive.ubuntu.com/ubuntu trusty universe
 deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main
 deb http://download.mono-project.com/repo/debian wheezy main
 deb http://download.mono-project.com/repo/debian wheezy-libjpeg62-compat main
+deb http://httpredir.debian.org/debian jessie main
 EOF
 
 cp -a /etc/apt/trusted.gpg $BUILD_DIR/trusted.gpg
@@ -74,37 +75,6 @@ for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
   topic "Installing $(basename $DEB)"
   dpkg -x $DEB $BUILD_DIR/.apt/
 done
-
-echo "#################################################"
-echo "#################################################"
-echo "#################################################"
-echo "#################################################"
-echo "#################################################"
-topic "Deleting .debs and installing Aptfile2"
-ldconfig
-apt-get $APT_OPTIONS update | indent
-
-rm -rf $APT_CACHE_DIR/archives/*.deb
-
-for PACKAGE in $(cat $BUILD_DIR/Aptfile2); do
-  if [[ $PACKAGE == *deb ]]; then
-    PACKAGE_NAME=$(basename $PACKAGE .deb)
-    PACKAGE_FILE=$APT_CACHE_DIR/archives/00_$PACKAGE_NAME.deb
-
-    topic "Fetching $PACKAGE"
-    curl -s -L -z $PACKAGE_FILE -o $PACKAGE_FILE $PACKAGE 2>&1 | indent
-  else
-    topic "Fetching .debs for $PACKAGE"
-    apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $PACKAGE | indent
-  fi
-done
-
-
-for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
-  topic "Installing $(basename $DEB)"
-  dpkg -x $DEB $BUILD_DIR/.apt/
-done
-
 
 topic "Writing profile script"
 cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
