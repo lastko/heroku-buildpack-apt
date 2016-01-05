@@ -97,6 +97,12 @@ for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
   dpkg -x $DEB $BUILD_DIR/.apt/
 done
 
+topic "Installing dnvm."
+curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh > $BUILD_DIR/dnvminstall.sh 
+chmod +x $BUILD_DIR/dnvminstall.sh
+source .dnx/dnvm/dnvm.sh && dnvm install latest -r coreclr -alias edge-coreclr
+
+
 topic "Writing profile script"
 cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
 export PATH="\$HOME/.apt/usr/bin:\$PATH"
@@ -106,6 +112,7 @@ export INCLUDE_PATH="\$HOME/.apt/usr/include:\$INCLUDE_PATH"
 export CPATH="\$INCLUDE_PATH"
 export CPPPATH="\$INCLUDE_PATH"
 export PKG_CONFIG_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/pkgconfig:\$PKG_CONFIG_PATH"
+[ -s "/app/.dnx/dnvm/dnvm.sh" ] && . "/app/.dnx/dnvm/dnvm.sh
 EOF
 
 export PATH="$BUILD_DIR/.apt/usr/bin:$PATH"
