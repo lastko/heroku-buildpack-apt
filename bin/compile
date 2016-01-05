@@ -48,10 +48,18 @@ deb http://download.mono-project.com/repo/debian wheezy-libjpeg62-compat main
 deb http://httpredir.debian.org/debian jessie main
 EOF
 
+cat <<EOF > $BUILD_DIR/.profile.d/preferences
+Package: *
+Pin: release n=trusty*
+Pin-Priority: 990
+EOF
+
+
 cp -a /etc/apt/trusted.gpg $BUILD_DIR/trusted.gpg
 apt-key --keyring $BUILD_DIR/trusted.gpg adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 
-APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR -o Dir::Etc::SourceList=$BUILD_DIR/.profile.d/sources.list -o Dir::Etc::Trusted=$BUILD_DIR/trusted.gpg"
+
+APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR -o Dir::Etc::SourceList=$BUILD_DIR/.profile.d/sources.list -o Dir::Etc::Trusted=$BUILD_DIR/trusted.gpg -o Dir::Etc::Preferences=$BUILD_DIR/.profile.d/preferences"
 
 topic "Updating apt caches"
 apt-get $APT_OPTIONS update | indent
