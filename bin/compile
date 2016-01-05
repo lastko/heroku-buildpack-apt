@@ -47,6 +47,7 @@ deb http://download.mono-project.com/repo/debian wheezy main
 deb http://download.mono-project.com/repo/debian wheezy-libjpeg62-compat main
 EOF
 
+echo "APT::Get::AllowUnauthenticated "true";" > .apt/etc/apt/apt.conf.d/99myown
 APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR -o Dir::Etc::SourceList=$BUILD_DIR/.profile.d/sources.list"
 
 topic "Updating apt caches"
