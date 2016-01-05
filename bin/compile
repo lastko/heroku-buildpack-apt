@@ -100,7 +100,7 @@ done
 topic "Installing dnvm."
 curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh > $BUILD_DIR/dnvminstall.sh 
 chmod +x $BUILD_DIR/dnvminstall.sh
-source .dnx/dnvm/dnvm.sh && dnvm install latest -r coreclr -alias edge-coreclr
+source $BUILD_DIR/.dnx/dnvm/dnvm.sh && dnvm install latest -r coreclr -alias edge-coreclr
 
 
 topic "Writing profile script"
