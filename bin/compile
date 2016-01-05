@@ -47,11 +47,12 @@ deb http://download.mono-project.com/repo/debian wheezy main
 deb http://download.mono-project.com/repo/debian wheezy-libjpeg62-compat main
 EOF
 
-echo "APT::Get::AllowUnauthenticated "true";" > $BUILD_DIR/.apt/etc/apt/apt.conf.d/99myown
-APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR -o Dir::Etc::SourceList=$BUILD_DIR/.profile.d/sources.list"
+cp -a /etc/apt/trusted.gpg $BUILD_DIR/trusted.gpg
+apt-key --keyring $BUILD_DIR/trusted.gpg adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+
+APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR -o Dir::Etc::SourceList=$BUILD_DIR/.profile.d/sources.list -o Dir::Etc::Trusted=$BUILD_DIR/trusted.gpg"
 
 topic "Updating apt caches"
-#apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 apt-get $APT_OPTIONS --allow-unauthenticated update | indent
 
 for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
