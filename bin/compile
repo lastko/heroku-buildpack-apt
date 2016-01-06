@@ -174,4 +174,6 @@ cd $PWD_STORE
 ( set -o posix ; set ) > $BUILD_DIR/environment
 sed -e "s|$BUILD_DIR|/app|g" -i $BUILD_DIR/.apt/usr/bin/dmcs
 
+dnu restore
+
 export | grep -E -e ' (PATH|LD_LIBRARY_PATH|LIBRARY_PATH|INCLUDE_PATH|CPATH|CPPPATH|PKG_CONFIG_PATH)='  > "$LP_DIR/export"
