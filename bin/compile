@@ -98,8 +98,8 @@ for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
 done
 
 topic "Install edge dependences node-gyp and mocha"
-npm install node-gyp -g
-npm install mocha -g
+npm install node-gyp
+npm install mocha
 
 topic "Install dnvm."
 curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh > $BUILD_DIR/dnvminstall.sh 
@@ -116,7 +116,8 @@ PWD_STORE=$PWD
 curl https://codeload.github.com/tjanczuk/edge/zip/master > $BUILD_DIR/node_modules/edge.js.zip
 cd $BUILD_DIR/node_modules/
 unzip  $BUILD_DIR/node_modules/edge.js.zip
-cd edge-master/
+mv edge-master edge
+cd edge/
 EDGE_DIRECTORY=$(pwd)
 
 dnvm use edge-coreclr
@@ -135,8 +136,6 @@ export CPPPATH="\$INCLUDE_PATH"
 export PKG_CONFIG_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/pkgconfig:\$PKG_CONFIG_PATH"
 EOF
 
-echo '[ -s "/app/.dnx/dnvm/dnvm.sh" ] && . "/app/.dnx/dnvm/dnvm.sh' > $BUILD_DIR/.profile.d/001_dnvm.sh
-chmod +x $BUILD_DIR/.profile.d/001_dnvm.sh
 
 export PATH="$BUILD_DIR/.apt/usr/bin:$PATH"
 export LD_LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LD_LIBRARY_PATH"
