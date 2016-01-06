@@ -129,7 +129,14 @@ export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUIL
 #export MONO_CFG_DIR="${BUILD_DIR}/.apt/etc"
 #export MONO_REGISTRY_PATH="${BUILD_DIR}/.mono/registry"
 
-
+topic "Install node"
+curl https://codeload.github.com/nodejs/node/tar.gz/v4.2.3 > $BUILD_DIR/node.v4.2.3.gz
+tar -xzf $BUILD_DIR/node.v4.2.3.gz 
+cd $BUILD_DIR/node-4.2.3/
+./configure --prefix=$BUILD_DIR/.apt/usr
+make
+make install
+  
 sed -e "s|/usr/|$BUILD_DIR/.apt/usr/|g" -i $BUILD_DIR/.apt/usr/bin/dmcs
 
 #give environment to later buildpacks
