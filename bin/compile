@@ -141,7 +141,7 @@ cd $BUILD_DIR/
 curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh > dnvminstall.sh 
 chmod +x dnvminstall.sh
 ./dnvminstall.sh
-source .dnx/dnvm/dnvm.sh
+. "/app/.dnx/dnvm/dnvm.sh" 
 dnvm install latest -r coreclr -alias edge-coreclr
 cd $PWD_STORE
 
