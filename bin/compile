@@ -104,7 +104,10 @@ npm install mocha -g
 topic "Install dnvm."
 curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh > $BUILD_DIR/dnvminstall.sh 
 chmod +x $BUILD_DIR/dnvminstall.sh
-source $BUILD_DIR/.dnx/dnvm/dnvm.sh
+curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvm.sh > $BUILD_DIR/.profile.d/dnvm.sh
+chmod +x $BUILD_DIR/.profile.d/dnvm.sh
+mkdir -p $BUILD_DIR/.dnvm
+source $BUILD_DIR/.profile.d/dnvm.sh
 dnvm install latest -r coreclr -alias edge-coreclr
 
 topic "Install edge.js"
