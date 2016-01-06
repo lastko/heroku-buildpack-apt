@@ -130,9 +130,11 @@ export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUIL
 #export MONO_REGISTRY_PATH="${BUILD_DIR}/.mono/registry"
 
 topic "Install node"
+PWD_STORE=$PWD
 curl https://codeload.github.com/nodejs/node/tar.gz/v4.2.3 > $BUILD_DIR/node.v4.2.3.gz
-tar -xzf $BUILD_DIR/node.v4.2.3.gz 
-cd $BUILD_DIR/node-4.2.3/
+cd $BUILD_DIR
+tar -xzf node.v4.2.3.gz 
+cd node-4.*
 ./configure --prefix=$BUILD_DIR/.apt/usr
 make
 make install
