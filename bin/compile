@@ -117,7 +117,7 @@ export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-sed 's|/usr/bin/|/app/.apt/usr/bin/|g' -i $BUILD_DIR/.apt/usr/bin/dmcs
+sed "s|/usr/bin/|$BUILD_DIR/.apt/usr/bin/|g" -i $BUILD_DIR/.apt/usr/bin/dmcs
 
 #give environment to later buildpacks
 topic "Install edge dependences node-gyp and mocha"
@@ -147,5 +147,7 @@ dnvm use edge-coreclr
 npm install
 
 cd $PWD_STORE
+
+sed "s|/usr/bin/|/app/.apt/usr/bin/|g" -i $BUILD_DIR/.apt/usr/bin/dmcs
 
 export | grep -E -e ' (PATH|LD_LIBRARY_PATH|LIBRARY_PATH|INCLUDE_PATH|CPATH|CPPPATH|PKG_CONFIG_PATH)='  > "$LP_DIR/export"
