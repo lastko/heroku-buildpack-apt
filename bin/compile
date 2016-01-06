@@ -129,15 +129,15 @@ export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUIL
 #export MONO_CFG_DIR="${BUILD_DIR}/.apt/etc"
 #export MONO_REGISTRY_PATH="${BUILD_DIR}/.mono/registry"
 
-topic "Install node"
-PWD_STORE=$PWD
-curl https://codeload.github.com/nodejs/node/tar.gz/v4.2.3 > $BUILD_DIR/node.v4.2.3.gz
-cd $BUILD_DIR
-tar -xzf node.v4.2.3.gz 
-cd node-4.*
-./configure --prefix=$BUILD_DIR/.apt/usr
-make
-make install
+#topic "Install node"
+#PWD_STORE=$PWD
+#curl https://codeload.github.com/nodejs/node/tar.gz/v4.2.3 > $BUILD_DIR/node.v4.2.3.gz
+#cd $BUILD_DIR
+#tar -xzf node.v4.2.3.gz 
+#cd node-4.*
+#./configure --prefix=$BUILD_DIR/.apt/usr
+#make
+#make install
   
 sed -e "s|/usr/|$BUILD_DIR/.apt/usr/|g" -i $BUILD_DIR/.apt/usr/bin/dmcs
 
@@ -159,16 +159,15 @@ dnvm install -g latest -r coreclr -alias edge-coreclr
 
 
 topic "Install edge.js"
-#PWD_STORE=$PWD
-#curl https://codeload.github.com/tjanczuk/edge/zip/master > $BUILD_DIR/node_modules/edge.js.zip
-#cd $BUILD_DIR/node_modules/
-#unzip  $BUILD_DIR/node_modules/edge.js.zip
-#mv edge-master edge
-#cd edge/
-#EDGE_DIRECTORY=$(pwd)
-#dnvm use edge-coreclr
-#npm install
-npm install edge -g
+PWD_STORE=$PWD
+curl https://codeload.github.com/tjanczuk/edge/zip/master > $BUILD_DIR/node_modules/edge.js.zip
+cd $BUILD_DIR/node_modules/
+unzip  $BUILD_DIR/node_modules/edge.js.zip
+mv edge-master edge
+cd edge/
+EDGE_DIRECTORY=$(pwd)
+dnvm use -g -p edge-coreclr
+npm install
 
 cd $PWD_STORE
 
