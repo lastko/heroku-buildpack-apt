@@ -146,20 +146,20 @@ curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh > dnv
 chmod +x dnvminstall.sh
 ./dnvminstall.sh
 . "$DNX_USER_HOME/dnvm/dnvm.sh" 
-dnvm install latest -r coreclr -alias edge-coreclr
+dnvm install -g latest -r coreclr -alias edge-coreclr
 
 
 topic "Install edge.js"
-PWD_STORE=$PWD
-curl https://codeload.github.com/tjanczuk/edge/zip/master > $BUILD_DIR/node_modules/edge.js.zip
-cd $BUILD_DIR/node_modules/
-unzip  $BUILD_DIR/node_modules/edge.js.zip
-mv edge-master edge
-cd edge/
-EDGE_DIRECTORY=$(pwd)
-
-dnvm use edge-coreclr
-npm install
+#PWD_STORE=$PWD
+#curl https://codeload.github.com/tjanczuk/edge/zip/master > $BUILD_DIR/node_modules/edge.js.zip
+#cd $BUILD_DIR/node_modules/
+#unzip  $BUILD_DIR/node_modules/edge.js.zip
+#mv edge-master edge
+#cd edge/
+#EDGE_DIRECTORY=$(pwd)
+#dnvm use edge-coreclr
+#npm install
+npm insall edge -g
 
 cd $PWD_STORE
 
