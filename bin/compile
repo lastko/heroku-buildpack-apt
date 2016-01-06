@@ -159,7 +159,7 @@ topic "Install edge.js"
 #EDGE_DIRECTORY=$(pwd)
 #dnvm use edge-coreclr
 #npm install
-npm insall edge -g
+npm install edge -g
 
 cd $PWD_STORE
 
