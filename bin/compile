@@ -110,6 +110,8 @@ export MONO_PATH="\$HOME/.apt/usr/lib/mono/4.0:${HOME}/.apt/usr/lib/mono/3.5:${H
 export MONO_CONFIG="${HOME}/.apt/etc/mono/config"
 export MONO_CFG_DIR="${HOME}/.apt/etc"
 export MONO_REGISTRY_PATH="${HOME}/.mono/registry"
+source .dnx/dnvm/dnvm.sh
+dnvm use edge-coreclr
 EOF
 
 
@@ -134,17 +136,17 @@ npm install node-gyp -g
 npm install mocha -g
 
 topic "Install dnvm."
-curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh > $BUILD_DIR/dnvminstall.sh 
-chmod +x $BUILD_DIR/dnvminstall.sh
-curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvm.sh > $BUILD_DIR/.profile.d/dnvm.sh
-chmod +x $BUILD_DIR/.profile.d/dnvm.sh
-mkdir -p $BUILD_DIR/.dnvm
-source $BUILD_DIR/.profile.d/dnvm.sh
+PWD_STORE=$PWD
+cd $BUILD_DIR/
+curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh > dnvminstall.sh 
+chmod +x dnvminstall.sh
+./dnvminstall.sh
+source .dnx/dnvm/dnvm.sh
 dnvm install latest -r coreclr -alias edge-coreclr
+cd $PWD_STORE
+
 
 topic "Install edge.js"
-
-PWD_STORE=$PWD
 curl https://codeload.github.com/tjanczuk/edge/zip/master > $BUILD_DIR/node_modules/edge.js.zip
 cd $BUILD_DIR/node_modules/
 unzip  $BUILD_DIR/node_modules/edge.js.zip
